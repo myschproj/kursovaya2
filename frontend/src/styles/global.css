@@ -1,0 +1,60 @@
+html, body, #app {
+  min-height: 100%;
+}
+
+.v-application.font-large,
+.v-application.font-large .v-card,
+.v-application.font-large .v-table,
+.v-application.font-large .v-field,
+.v-application.font-large .v-btn,
+.v-application.font-large .v-alert {
+  font-size: 18px;
+}
+
+.v-application.font-small,
+.v-application.font-small .v-card,
+.v-application.font-small .v-table,
+.v-application.font-small .v-field,
+.v-application.font-small .v-btn,
+.v-application.font-small .v-alert {
+  font-size: 14px;
+}
+
+.v-application.accessibility-mode {
+  letter-spacing: 0.025em;
+}
+
+.v-application.accessibility-mode .v-btn {
+  min-height: 46px;
+}
+
+.v-application.accessibility-mode .v-field__input,
+.v-application.accessibility-mode .v-selection-control {
+  min-height: 48px;
+}
+
+.v-application.theme-contrast {
+  color: #000000;
+}
+
+.v-application.theme-contrast .v-card,
+.v-application.theme-contrast .v-table,
+.v-application.theme-contrast .v-alert,
+.v-application.theme-contrast .v-field {
+  border: 2px solid #000000;
+}
+
+.v-application.theme-contrast .v-btn {
+  border: 2px solid #000000;
+  font-weight: 700;
+}
+
+.feedback-card {
+  border-left: 4px solid currentColor;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}

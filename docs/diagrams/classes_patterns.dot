@@ -1,0 +1,21 @@
+digraph G {
+  graph [rankdir=TB, fontname="DejaVu Sans"];
+  node [shape=box, style="rounded,filled", fontname="DejaVu Sans", fillcolor="#e3f2fd"];
+  edge [fontname="DejaVu Sans"];
+  DispatchStrategy [label="<<interface>>\nDispatchStrategy\n+ selectElevator(elevators, call)", fillcolor="#fff8e1"];
+  Nearest [label="NearestElevatorStrategy\n+ selectElevator(elevators, call)", fillcolor="#e8f5e9"];
+  Destination [label="DestinationGroupingStrategy\n+ selectElevator(elevators, call)", fillcolor="#e8f5e9"];
+  DispatchService [label="DispatchService\n- strategy\n- elevatorRepository\n- callRepository\n+ setStrategy(name)\n+ dispatch(call)"];
+  ElevatorRepository [label="<<interface>>\nElevatorRepository\n+ findAll()\n+ findActive()\n+ findById(id)\n+ create(data)\n+ update(id,data)\n+ delete(id)", fillcolor="#fff8e1"];
+  PrismaRepo [label="PrismaElevatorRepository\n+ findAll()\n+ findActive()\n+ findById(id)\n+ create(data)\n+ update(id,data)\n+ delete(id)", fillcolor="#e8f5e9"];
+  Observer [label="<<interface>>\nElevatorObserver\n+ update(event)", fillcolor="#fff8e1"];
+  Notifier [label="ElevatorStatusNotifier\n- observers\n+ subscribe(observer)\n+ notify(event)"];
+  EventLog [label="EventLogObserver\n+ update(event)", fillcolor="#e8f5e9"];
+  Nearest -> DispatchStrategy [arrowhead=empty, label="реализует"];
+  Destination -> DispatchStrategy [arrowhead=empty, label="реализует"];
+  DispatchService -> DispatchStrategy [label="Strategy"];
+  PrismaRepo -> ElevatorRepository [arrowhead=empty, label="реализует"];
+  DispatchService -> ElevatorRepository [label="Repository"];
+  EventLog -> Observer [arrowhead=empty, label="реализует"];
+  Notifier -> Observer [label="Observer"];
+}

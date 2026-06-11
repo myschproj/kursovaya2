@@ -1,0 +1,21 @@
+digraph G {
+  graph [rankdir=LR, fontname="DejaVu Sans"];
+  node [shape=box, style="rounded,filled", fillcolor="#eef5ff", fontname="DejaVu Sans"];
+  edge [fontname="DejaVu Sans"];
+  start [shape=circle, label="", fillcolor="#111111", width=0.25];
+  a [label="Выбор этажа\nотправления"];
+  b [label="Выбор этажа\nназначения"];
+  c [label="POST /api/calls"];
+  d [shape=diamond, label="Данные\nкорректны?", fillcolor="#fff8e1"];
+  e [label="Создание вызова\nNEW"];
+  f [label="Выбор\nоптимального лифта"];
+  g [label="ASSIGNED\nлифт MOVING"];
+  h [label="Показ статуса\nпользователю"];
+  err [label="Понятное\nсообщение об ошибке", fillcolor="#ffebee"];
+  end [shape=doublecircle, label="", fillcolor="#111111", width=0.25];
+  start -> a -> b -> c -> d;
+  d -> e [label="да"];
+  e -> f -> g -> h -> end;
+  d -> err [label="нет"];
+  err -> end;
+}

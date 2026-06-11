@@ -1,0 +1,26 @@
+digraph G {
+  graph [rankdir=LR, fontname="DejaVu Sans"];
+  node [fontname="DejaVu Sans"];
+  edge [fontname="DejaVu Sans"];
+  passenger [shape=ellipse, label="Пассажир", style=filled, fillcolor="#fff8e1"];
+  dispatcher [shape=ellipse, label="Диспетчер", style=filled, fillcolor="#fff8e1"];
+  admin [shape=ellipse, label="Администратор", style=filled, fillcolor="#fff8e1"];
+  tech [shape=ellipse, label="Техник", style=filled, fillcolor="#fff8e1"];
+  subgraph cluster_system {
+    label="Система управления лифтами"; fontname="DejaVu Sans"; color="#1565c0";
+    call [shape=oval, label="Вызвать лифт"];
+    floor [shape=oval, label="Выбрать этаж"];
+    status [shape=oval, label="Получить статус"];
+    monitor [shape=oval, label="Мониторинг лифтов"];
+    journal [shape=oval, label="Журнал событий"];
+    users [shape=oval, label="CRUD пользователей"];
+    elevators [shape=oval, label="CRUD лифтов"];
+    floors [shape=oval, label="CRUD этажей"];
+    settings [shape=oval, label="Настроить интерфейс"];
+    defect [shape=oval, label="Зафиксировать неисправность"];
+  }
+  passenger -> call; passenger -> floor; passenger -> status; passenger -> settings;
+  dispatcher -> monitor; dispatcher -> journal;
+  admin -> users; admin -> elevators; admin -> floors; admin -> journal;
+  tech -> monitor; tech -> defect; tech -> journal;
+}

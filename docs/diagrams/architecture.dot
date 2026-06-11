@@ -1,0 +1,12 @@
+digraph G {
+  graph [rankdir=LR, fontname="DejaVu Sans", bgcolor="white"];
+  node [shape=box, style="rounded,filled", fontname="DejaVu Sans", fillcolor="#eef5ff", color="#1565c0"];
+  edge [fontname="DejaVu Sans", color="#333333"];
+  user [label="Пользователь\nбраузер", fillcolor="#fff8e1", color="#f9a825"];
+  frontend [label="Frontend\nVue 3 + Vuetify\nPinia + Router", fillcolor="#e8f5e9", color="#2e7d32"];
+  backend [label="Backend\nNode.js + Express\nREST API JSON", fillcolor="#e3f2fd", color="#1565c0"];
+  db [label="PostgreSQL\nPrisma ORM", shape=cylinder, fillcolor="#f3e5f5", color="#6a1b9a"];
+  user -> frontend [label="HTTP UI"];
+  frontend -> backend [label="REST/JSON\nAxios"];
+  backend -> db [label="SQL через ORM"];
+}

@@ -1,0 +1,21 @@
+digraph G {
+  graph [rankdir=LR, splines=ortho, fontname="DejaVu Sans"];
+  node [shape=record, fontname="DejaVu Sans"];
+  edge [fontname="DejaVu Sans", arrowhead=none, arrowtail=none];
+  roles [label="{roles|PK id\lname\ldescription\l}"];
+  users [label="{users|PK id\lname\lemail\lpassword_hash\lFK role_id\lcreated_at\l}"];
+  settings [label="{user_settings|PK id\lFK user_id\ltheme\lfont_size\laccessibility_mode\l}"];
+  floors [label="{floors|PK id\lnumber\lname\lis_available\l}"];
+  elevators [label="{elevators|PK id\lname\lFK current_floor_id\lstatus\ldirection\lcapacity\l}"];
+  calls [label="{elevator_calls|PK id\lFK user_id\lFK from_floor_id\lFK to_floor_id\lFK elevator_id\lstatus\lcreated_at\l}"];
+  events [label="{events|PK id\lFK user_id\lFK elevator_id\levent_type\lmessage\lcreated_at\l}"];
+  rules [label="{dispatch_rules|PK id\lname\lstrategy\lis_enabled\ldescription\l}"];
+  roles -> users [label="1 к N"];
+  users -> settings [label="1 к 1"];
+  users -> calls [label="1 к N"];
+  users -> events [label="1 к N"];
+  floors -> elevators [label="1 к N"];
+  floors -> calls [label="1 к N"];
+  elevators -> calls [label="1 к N"];
+  elevators -> events [label="1 к N"];
+}

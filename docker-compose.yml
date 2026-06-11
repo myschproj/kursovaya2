@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: elevator-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: elevator
+      POSTGRES_PASSWORD: elevator
+      POSTGRES_DB: elevator_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: elevator-backend
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgresql://elevator:elevator@postgres:5432/elevator_db?schema=public
+      JWT_SECRET: course-work-secret
+      PORT: 3000
+      CORS_ORIGIN: http://localhost:5173
+    ports:
+      - "3000:3000"
+    command: sh -c "npx prisma migrate deploy && node prisma/seed.js && npm run start"
+
+  frontend:
+    build: ./frontend
+    container_name: elevator-frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:3000/api
+
+volumes:
+  postgres_data:

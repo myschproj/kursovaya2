@@ -1,0 +1,14 @@
+digraph G {
+  graph [rankdir=LR, fontname="DejaVu Sans"];
+  node [shape=box, style="rounded,filled", fillcolor="#e3f2fd", fontname="DejaVu Sans"];
+  edge [fontname="DejaVu Sans"];
+  p1 [label="1. Прием вызова"];
+  p2 [label="2. Валидация этажей"];
+  p3 [label="3. Выбор алгоритма"];
+  p4 [label="4. Поиск доступных лифтов"];
+  p5 [label="5. Назначение кабины"];
+  p6 [label="6. Обновление статуса"];
+  p7 [label="7. Запись события в журнал"];
+  p8 [label="8. Ответ пользователю"];
+  p1 -> p2 -> p3 -> p4 -> p5 -> p6 -> p7 -> p8;
+}

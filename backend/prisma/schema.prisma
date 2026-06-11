@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  users       User[]
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  name         String
+  email        String         @unique
+  passwordHash String
+  roleId       Int
+  role         Role           @relation(fields: [roleId], references: [id])
+  calls        ElevatorCall[]
+  events       Event[]
+  settings     UserSettings?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model Floor {
+  id              Int            @id @default(autoincrement())
+  number          Int            @unique
+  name            String
+  isAvailable     Boolean        @default(true)
+  currentElevators Elevator[]     @relation("CurrentFloor")
+  callsFrom       ElevatorCall[] @relation("CallFromFloor")
+  callsTo         ElevatorCall[] @relation("CallToFloor")
+}
+
+model Elevator {
+  id             Int            @id @default(autoincrement())
+  name           String         @unique
+  currentFloorId Int
+  currentFloor   Floor          @relation("CurrentFloor", fields: [currentFloorId], references: [id])
+  status         String @default("IDLE")
+  direction      String @default("STOPPED")
+  capacity       Int            @default(8)
+  maxFloor       Int            @default(10)
+  isActive       Boolean        @default(true)
+  calls          ElevatorCall[]
+  events         Event[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model ElevatorCall {
+  id          Int        @id @default(autoincrement())
+  userId      Int?
+  user        User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  fromFloorId Int
+  fromFloor   Floor      @relation("CallFromFloor", fields: [fromFloorId], references: [id], onDelete: Cascade)
+  toFloorId   Int
+  toFloor     Floor      @relation("CallToFloor", fields: [toFloorId], references: [id], onDelete: Cascade)
+  elevatorId  Int?
+  elevator    Elevator?  @relation(fields: [elevatorId], references: [id], onDelete: SetNull)
+  status      String @default("NEW")
+  errorText   String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Event {
+  id         Int       @id @default(autoincrement())
+  userId     Int?
+  user       User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  elevatorId Int?
+  elevator   Elevator? @relation(fields: [elevatorId], references: [id], onDelete: SetNull)
+  eventType  String
+  message    String
+  createdAt  DateTime  @default(now())
+}
+
+model UserSettings {
+  id                Int     @id @default(autoincrement())
+  userId            Int     @unique
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme             String  @default("light")
+  fontSize          String  @default("medium")
+  accessibilityMode Boolean @default(false)
+  soundFeedback     Boolean @default(true)
+  language          String  @default("ru")
+}
+
+model DispatchRule {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  strategy    String
+  isEnabled   Boolean  @default(true)
+  description String?
+  createdAt   DateTime @default(now())
+}

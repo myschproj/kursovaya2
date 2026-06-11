@@ -1,0 +1,82 @@
+openapi: 3.0.3
+info:
+  title: Elevator Control API
+  version: 1.0.0
+  description: REST API информационной системы управления лифтами.
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /auth/login:
+    post:
+      summary: Авторизация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email: { type: string, example: admin@example.com }
+                password: { type: string, example: admin123 }
+      responses:
+        '200': { description: JWT токен и данные пользователя }
+  /elevators:
+    get:
+      summary: Получить список лифтов
+      responses:
+        '200': { description: Список лифтов }
+    post:
+      summary: Создать лифт
+      responses:
+        '201': { description: Лифт создан }
+  /elevators/{id}:
+    put:
+      summary: Обновить лифт
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: Лифт обновлен }
+    delete:
+      summary: Удалить лифт
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: integer }
+      responses:
+        '204': { description: Лифт удален }
+  /floors:
+    get: { summary: Получить этажи, responses: { '200': { description: Список этажей } } }
+    post: { summary: Создать этаж, responses: { '201': { description: Этаж создан } } }
+  /calls:
+    get: { summary: Получить вызовы, responses: { '200': { description: Список вызовов } } }
+    post:
+      summary: Создать вызов лифта
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fromFloorId: { type: integer }
+                toFloorId: { type: integer }
+                strategy: { type: string, enum: [nearest, destination] }
+      responses:
+        '201': { description: Вызов создан и обработан диспетчером }
+  /events:
+    get: { summary: Получить журнал событий, responses: { '200': { description: Журнал событий } } }
+  /settings:
+    get: { summary: Получить настройки интерфейса, responses: { '200': { description: Настройки пользователя } } }
+    put: { summary: Обновить настройки интерфейса, responses: { '200': { description: Настройки сохранены } } }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
